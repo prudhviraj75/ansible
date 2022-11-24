@@ -8,3 +8,34 @@ ansible prodservers --list-hosts
 ansible serversgroup --list-hosts
 ansible --help
 ansible ungrouped --list-hosts
+#connect to remote system
+ping -c 3 10.0.1.8
+
+ssh student@10.0.1.8
+
+#on the remote system in stall openssh and open firewall port if required
+apt update
+apt install openssh-serversgroup
+systemctl status sshd
+ufw status #make sure 22/tcp opened
+
+# make sure student is able to login via ssh keybased authentication
+ssh-copy-id student@10.0.1.x/y
+
+ansible myservers -m ping 
+
+#modile ref link
+https://docs.ansible.com/ansible/2.9/modules/modules_by_category.html
+
+#https://docs.ansible.com/ansible/2.9/user_guide/intro_adhoc.html#intro-adhoc
+ansible [pattern] -m [module] -a "[module options]"
+
+ansible atlanta -m command -a "/sbin/reboot"
+
+ansible atlanta -a "/sbin/reboot"
+ansible atlanta -m shell -a uptime
+
+#rename your second system as ubuNN
+hostname set-hostname ubuNN
+ansible dbservers -m shell -a "hostnamectl set-hostname ubun8"
+
