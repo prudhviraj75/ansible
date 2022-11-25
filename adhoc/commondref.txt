@@ -39,3 +39,33 @@ ansible atlanta -m shell -a uptime
 hostname set-hostname ubuNN
 ansible dbservers -m shell -a "hostnamectl set-hostname ubun8"
 
+#in all ansible hosts>>>
+#modify / add sudo without password for user student
+#create a new file in /etc/sudoes.d/somename 
+somename ALL=(ALL) NOPASSWD: ALL
+
+
+
+
+keyboard settings for vscode:
+{
+  "key": "ctrl+alt+e",
+  "command": "workbench.action.terminal.runSelectedText"
+}
+
+
+#in all host configure req sudo accounts (account.sudo.keybased)
+
+#ConfigManagement Automated - Ansible ->> openssh
+#controlnode - ansible ---- ansiblehost
+
+#Module - shell, copy, apt, yum, service, user
+# module copy  with source and destination
+ansible myservers -m copy -a "src=cal2025.txt dest=/tmp"
+
+ansible myservers -m ping
+
+ansible myservers -m setup
+
+ansible dbservers -m apt -a "name=vim state=present"
+ansible dbservers -m apt -a "name=vim state=absent"
