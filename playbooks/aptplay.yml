@@ -1,0 +1,13 @@
+---
+- name: install vim after apt update playbook
+  hosts: allservers
+  tasks:
+    - name: Task1 Run the equivalent of "apt-get update" as a separate task
+      apt:
+        update_cache: yes
+
+    - name: Task 2 Install vim text editor  (state=present is optional)
+      apt:
+        name: vim
+    #state: present
+    

@@ -1,0 +1,9 @@
+---
+- name: copying file
+  hosts: allservers    
+  tasks:
+     - name: copying cal2025.txt
+       copy:
+         src: /home/student/ansible/adhoc/cal2025.txt     
+         dest: /tmp
+         mode: '0755'

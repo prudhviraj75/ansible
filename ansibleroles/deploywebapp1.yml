@@ -1,0 +1,5 @@
+---
+- name: use webapp1 role1
+  hosts: webservers
+  roles:
+     - webapp1
