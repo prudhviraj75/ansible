@@ -10,6 +10,11 @@
      group: 
       name: tomcat
       state: present
+   - name: Installing Java(JDK) (if not present)
+     apt:
+      name: openjdk-11-jre-headless
+      state: present
+      update_cache: yes
    - name: Create the user
      become: yes
      user:
@@ -30,32 +35,37 @@
        dest: /opt/tomcat
        mode: 0755
        remote_src: yes
+       extra_opts: [--strip-components=1]
        group: tomcat
        owner: tomcat
    - name: Creating a service file
      become: yes
      copy:
-      content: |-
+      dest: /etc/systemd/system/tomcat.service 
+      content: |          
           [Unit]
-           Description=Tomcat
-           After=network.target
-           [Service]
-           Type=forking
-           User=tomcat
-           Group=tomcat
-           Environment="JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64"
-           Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom"
-           Environment="CATALINA_BASE=/opt/tomcat"
-           Environment="CATALINA_HOME=/opt/tomcat"
-           Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
-           Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
-           ExecStart=/opt/tomcat/bin/startup.sh
-           ExecStop=/opt/tomcat/bin/shutdown.sh
-           RestartSec=10   
-           Restart=always
-           [Install]
-           WantedBy=multi-user.target  
-      dest: /etc/systemd/system/tomcat.service   
+          Description=Tomcat
+          After=network.target
+
+          [Service]
+          Type=forking
+          User=tomcat
+          Group=tomcat
+          Environment="JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64"
+          Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom"
+          Environment="CATALINA_BASE=/opt/tomcat"
+          Environment="CATALINA_HOME=/opt/tomcat"
+          Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
+          Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
+
+          ExecStart=/opt/tomcat/bin/startup.sh
+          ExecStop=/opt/tomcat/bin/shutdown.sh
+          RestartSec=10
+          Restart=always
+
+          [Install]   
+          WantedBy=multi-user.target  
+        
   
    - name: Task 6 Reload the SystemD to re-read configurations
      become: yes
